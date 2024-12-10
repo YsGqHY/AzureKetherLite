@@ -17,12 +17,13 @@ object KetherResolver : PrefixSupportResolver("ke") {
         actionBindings: ActionBindings,
         actionableObject: AzureFlowActionableObject
     ): Boolean {
-        args.evalKether(actionableObject.player, mapOf("item-amount" to actionableObject.itemStack))
+        args.evalKether(actionableObject.player, mapOf("item-amount" to actionableObject.itemStack?.amount))
         return true
     }
 
     override fun register() {
         AzureFlow.print("正在加载注册附属动作 [ $pluginId ( &f&l$actionName&7 ) ] 中..")
+        super.register()
         AzureFlow.print("成功注册附属 [ $pluginId ( &f&l$actionName&7 ) ]")
     }
 }
