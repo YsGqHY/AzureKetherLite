@@ -17,7 +17,7 @@ object KetherResolver : PrefixSupportResolver("ke") {
         actionBindings: ActionBindings,
         actionableObject: AzureFlowActionableObject
     ): Boolean {
-        args.evalKether(actionableObject.player, mapOf("item-amount" to actionableObject.itemStack?.amount))
+        args.evalKether(actionableObject.player, mapOf("item-amount" to actionableObject.itemStack?.amount), listOf("@AzureItemStack" to actionableObject.itemStack))
         return true
     }
 
