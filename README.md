@@ -1,4 +1,5 @@
 # AzureKetherLite
+> 前往 [Actions](https://github.com/YsGqHY/AzureKetherLite/actions) 下载最新版插件
 
 ## 构建发行版本
 
