@@ -27,6 +27,10 @@ taboolib {
     }
     description {
         name = "AzureKetherLite"
+        desc("让 AzureFlow 与 Kether 相亲相爱")
+        dependencies {
+            name("AzureFlow")
+        }
     }
     version { taboolib = "6.2.0" }
 }
