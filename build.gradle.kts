@@ -19,11 +19,13 @@ taboolib {
             BukkitNMS,
             BukkitNMSUtil,
             BukkitUtil,
+            DatabasePlayer,
             I18n,
             JavaScript,
             Jexl,
             MinecraftChat,
-            MinecraftEffect,)
+            MinecraftEffect
+        )
     }
     description {
         name = "AzureKetherLite"

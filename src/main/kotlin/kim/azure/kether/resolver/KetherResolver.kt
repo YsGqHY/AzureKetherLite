@@ -4,26 +4,40 @@ import io.rokuko.azureflow.AzureFlow
 import io.rokuko.azureflow.features.action.ActionBindings
 import io.rokuko.azureflow.features.action.AzureFlowActionableObject
 import io.rokuko.azureflow.features.resolver.provided.PrefixSupportResolver
-import kim.azure.kether.evalKether
+import kim.azure.kether.util.evalKether
 import taboolib.common.platform.function.pluginId
+import taboolib.common.platform.function.submit
+import taboolib.common.platform.function.submitAsync
+import taboolib.common5.cbool
 
 object KetherResolver : PrefixSupportResolver("ke") {
-
-    val actionName: String
-        get() = "ke"
 
     override fun doAction(
         args: String,
         actionBindings: ActionBindings,
         actionableObject: AzureFlowActionableObject
     ): Boolean {
-        args.evalKether(actionableObject.player, mapOf("item-amount" to actionableObject.itemStack?.amount), listOf("@AzureItemStack" to actionableObject.itemStack))
+        submitAsync {
+            args.evalKether(
+                actionableObject.player,
+                mapOf(
+                    "item-amount" to actionableObject.itemStack?.amount,
+                    "item-uuid" to actionableObject.item?.uuid
+                ),
+                listOf(
+                    "@AzureItemStack" to actionableObject.itemStack,
+                    "@AzureFlowItem" to actionableObject.item,
+                    "@AzureActionBindings" to actionBindings,
+                    "@AzureFlowActionableObject" to actionableObject
+                )
+            )
+        }
         return true
     }
 
     override fun register() {
-        AzureFlow.print("正在加载注册附属动作 [ $pluginId ( &f&l$actionName&7 ) ] 中..")
+        AzureFlow.print("正在加载注册附属动作 [ $pluginId ( &f&l$name&7 ) ] 中..")
         super.register()
-        AzureFlow.print("成功注册附属 [ $pluginId ( &f&l$actionName&7 ) ]")
+        AzureFlow.print("成功注册附属 [ $pluginId ( &f&l$name&7 ) ]")
     }
 }

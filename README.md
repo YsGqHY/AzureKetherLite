@@ -1,5 +1,7 @@
 # AzureKetherLite
 > 前往 [Actions](https://github.com/YsGqHY/AzureKetherLite/actions) 下载最新版插件
+> 
+> 部分动作需要使用最新版 **AzureFlow** 正常使用
 
 ## 构建发行版本
 

@@ -1,11 +1,10 @@
 package kim.azure.kether.kether
 
-import kim.azure.kether.getBukkitPlayer
-import org.bukkit.inventory.ItemStack
+import kim.azure.kether.data.KetherData.getItemStack
+import kim.azure.kether.util.getBukkitPlayer
 import org.bukkit.inventory.meta.ItemMeta
 import taboolib.common5.cint
 import taboolib.module.kether.KetherParser
-import taboolib.module.kether.ScriptFrame
 import taboolib.module.kether.combinationParser
 import taboolib.module.nms.getName
 import taboolib.platform.util.modifyMeta
@@ -27,52 +26,42 @@ import kotlin.jvm.optionals.getOrNull
  * 获取原始物品 Lore, 列表类型, 可用 element 0 of azure-item lore 获取第一行 lore
  * azure-item lore
  */
-object ItemAction {
-    /**
-     * 获取物品原始 ItemStack
-     */
-    fun ScriptFrame.getItemStack(): ItemStack {
-        return variables().get<Any?>("@AzureItemStack").orElse(null) as? ItemStack ?: error("No item selected.")
-    }
+@KetherParser(["azure-item"], shared = true)
+fun parseItem() = combinationParser {
+    it.group(
+        text(),
+        text().optional()
+    ).apply(it) { oper, token ->
+        now {
+            when (oper) {
+                "take", "remove", "consume" -> {
+                    getItemStack().amount -= token.getOrNull().cint
+                }
 
-    @KetherParser(["azure-item"], shared = true)
-    fun put() = combinationParser {
-        it.group(
-            text(),
-            text().optional()
-        ).apply(it) { oper, token ->
-            now {
-                when (oper) {
-                    "take", "remove", "consume" -> {
-                        getItemStack().amount -= token.getOrNull().cint
+                "give", "add" -> {
+                    val item = getItemStack().clone().also { i -> i.amount = 1 }
+                    val inv = getBukkitPlayer().inventory
+                    repeat(token.getOrNull().cint) {
+                        inv.addItem(item)
                     }
+                }
 
-                    "give", "add" -> {
-                        val item = getItemStack().clone().also { i -> i.amount = 1 }
-                        val inv = getBukkitPlayer().inventory
-                        repeat(token.getOrNull().cint) {
-                            inv.addItem(item)
-                        }
-                    }
+                "rename" -> {
+                    getItemStack().modifyMeta<ItemMeta> { setDisplayName(token.getOrNull() ?: "null") }
+                }
 
-                    "rename" -> {
-                        getItemStack().modifyMeta<ItemMeta> { setDisplayName(token.getOrNull() ?: "null") }
-                    }
+                "name" -> {
+                    getItemStack().getName(getBukkitPlayer())
+                }
 
-                    "name" -> {
-                        getItemStack().getName(getBukkitPlayer())
-                    }
+                "lore" -> {
+                    getItemStack().itemMeta?.lore ?: emptyList<String>()
+                }
 
-                    "lore" -> {
-                        getItemStack().itemMeta?.lore ?: emptyList<String>()
-                    }
-
-                    else -> {
-                        null
-                    }
+                else -> {
+                    null
                 }
             }
         }
     }
-
 }

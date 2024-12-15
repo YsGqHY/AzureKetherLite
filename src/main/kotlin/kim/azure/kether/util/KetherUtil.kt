@@ -1,4 +1,4 @@
-package kim.azure.kether
+package kim.azure.kether.util
 
 import org.bukkit.entity.Player
 import taboolib.common.platform.function.console
@@ -6,7 +6,6 @@ import taboolib.common5.Coerce
 import taboolib.library.kether.ParsedAction
 import taboolib.module.kether.*
 import java.util.concurrent.CompletableFuture
-
 
 fun ScriptFrame.getBukkitPlayer(name: ParsedAction<*>? = null): Player {
     val player = name?.let { org.bukkit.Bukkit.getPlayerExact(this.newFrame(name).run<String>().get()) }
