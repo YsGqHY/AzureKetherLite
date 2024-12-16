@@ -36,7 +36,6 @@ object KetherResolver : PrefixSupportResolver("ke") {
     }
 
     override fun register() {
-        AzureFlow.print("正在加载注册附属动作 [ $pluginId ( &f&l$name&7 ) ] 中..")
         super.register()
         AzureFlow.print("成功注册附属 [ $pluginId ( &f&l$name&7 ) ]")
     }
