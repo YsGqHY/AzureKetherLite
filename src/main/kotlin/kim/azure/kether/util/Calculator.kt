@@ -6,7 +6,7 @@ import kotlin.math.pow
 
 class Calculator {
 
-    private val p = Pattern.compile("(?<!\\d)-?\\d+(\\.\\d+)?|[+\\-*/%^()]")
+    private val p = Pattern.compile("(?<!\\d|\\))(-?\\d+(\\.\\d+)?)|[+\\-*/%^()]")
 
     @Throws(Exception::class)
     private fun doubleCal(a1: Double, a2: Double, operator: Char): Double {
@@ -40,6 +40,10 @@ class Calculator {
 
         @Throws(Exception::class)
         fun getResult(expr: String): Number {
+            if (expr.isBlank()) {
+                throw IllegalArgumentException("Expression is empty")
+            }
+
             val number = Stack<Double>()
             val operator = Stack<String?>()
             operator.push(null)
@@ -49,10 +53,7 @@ class Calculator {
                 val temp = m.group()
                 if (temp.matches("[+\\-*/%^()]".toRegex())) {
                     when (temp) {
-                        "(" -> {
-                            operator.push(temp)
-                        }
-
+                        "(" -> operator.push(temp)
                         ")" -> {
                             var b: String
                             while (operator.pop().also { b = it!! } != "(") {
@@ -61,7 +62,6 @@ class Calculator {
                                 number.push(handle.doubleCal(a2, a1, b[0]))
                             }
                         }
-
                         else -> {
                             while (handle.getPriority(temp) <= handle.getPriority(operator.peek())) {
                                 val a1 = number.pop()
@@ -75,6 +75,10 @@ class Calculator {
                 } else {
                     number.push(temp.toDouble())
                 }
+            }
+
+            if (operator.contains("(")) {
+                throw IllegalArgumentException("Mismatched parentheses in expression")
             }
 
             while (operator.peek() != null) {
