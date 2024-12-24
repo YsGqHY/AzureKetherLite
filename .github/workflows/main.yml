@@ -41,5 +41,5 @@ jobs:
       - name: capture build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "点我下载 给我 Star!!!"
+          name: "DownloadAndStar"
           path: build/libs/
