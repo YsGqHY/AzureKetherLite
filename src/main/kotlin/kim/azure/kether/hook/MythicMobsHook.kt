@@ -11,6 +11,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.common.platform.function.submit
 import taboolib.common5.cint
 
 
@@ -31,8 +32,10 @@ class AzureDropSkill(config: SkillConfig) : LocationTargetSkill, EntityTargetSki
 
         val factory = AzureFlowAPI.getFactory(item.get(meta.caster))
         val stack = factory?.build()?.virtualItemStack(player) ?: return SkillResult.ERROR
-        repeat(amount.get(meta.caster).cint) {
-            location.world?.dropItem(location, stack)
+        submit {
+            repeat(amount.get(meta.caster).cint) {
+                location.world?.dropItem(location, stack)
+            }
         }
         return SkillResult.SUCCESS
     }
@@ -44,8 +47,10 @@ class AzureDropSkill(config: SkillConfig) : LocationTargetSkill, EntityTargetSki
 
         val factory = AzureFlowAPI.getFactory(item.get(meta.caster))
         val stack = factory?.build()?.virtualItemStack(player) ?: return SkillResult.ERROR
-        repeat(amount.get(meta.caster).cint) {
-            location.world?.dropItem(location, stack)
+        submit {
+            repeat(amount.get(meta.caster).cint) {
+                location.world?.dropItem(location, stack)
+            }
         }
         return SkillResult.SUCCESS
     }
