@@ -40,7 +40,7 @@ class AzureDropSkill(config: SkillConfig) : LocationTargetSkill, EntityTargetSki
     override fun cast(meta: SkillMeta, entity: Entity): SkillResult {
         val location = entity.location
 
-        val player = meta.caster.entity as? Player ?: return SkillResult.ERROR
+        val player = meta.caster.entity as? Player
 
         val factory = AzureFlowAPI.getFactory(item.get(meta.caster))
         val stack = factory?.build()?.virtualItemStack(player) ?: return SkillResult.ERROR
