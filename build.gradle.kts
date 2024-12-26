@@ -32,9 +32,11 @@ taboolib {
         desc("让 AzureFlow 与 Kether 相亲相爱")
         dependencies {
             name("AzureFlow")
+            name("MythicMobs").optional(true)
         }
     }
     version { taboolib = "6.2.0" }
+    relocate("ink.ptms.um","kim.azure.kether.um")
 }
 
 repositories {
@@ -42,6 +44,7 @@ repositories {
 }
 
 dependencies {
+    taboo("ink.ptms:um:1.1.2")
     compileOnly("ink.ptms.core:v12004:12004:mapped")
     compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly(kotlin("stdlib"))
