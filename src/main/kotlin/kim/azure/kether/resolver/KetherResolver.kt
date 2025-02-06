@@ -9,6 +9,7 @@ import taboolib.common.platform.function.pluginId
 import taboolib.common.platform.function.submit
 import taboolib.common.platform.function.submitAsync
 import taboolib.common5.cbool
+import taboolib.module.kether.runKether
 
 object KetherResolver : PrefixSupportResolver("ke") {
 
