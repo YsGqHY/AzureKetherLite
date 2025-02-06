@@ -18,19 +18,21 @@ object KetherResolver : PrefixSupportResolver("ke") {
         actionableObject: AzureFlowActionableObject
     ): Boolean {
         submitAsync {
-            args.evalKether(
-                actionableObject.player,
-                mapOf(
-                    "item-amount" to actionableObject.itemStack?.amount,
-                    "item-uuid" to actionableObject.item?.uuid
-                ),
-                listOf(
-                    "@AzureItemStack" to actionableObject.itemStack,
-                    "@AzureFlowItem" to actionableObject.item,
-                    "@AzureActionBindings" to actionBindings,
-                    "@AzureFlowActionableObject" to actionableObject
+            runKether(true) {
+                args.evalKether(
+                    actionableObject.player,
+                    mapOf(
+                        "item-amount" to actionableObject.itemStack?.amount,
+                        "item-uuid" to actionableObject.item?.uuid
+                    ),
+                    listOf(
+                        "@AzureItemStack" to actionableObject.itemStack,
+                        "@AzureFlowItem" to actionableObject.item,
+                        "@AzureActionBindings" to actionBindings,
+                        "@AzureFlowActionableObject" to actionableObject
+                    )
                 )
-            )
+            }
         }
         return true
     }
