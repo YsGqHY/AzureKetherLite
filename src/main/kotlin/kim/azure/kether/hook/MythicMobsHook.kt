@@ -31,7 +31,8 @@ class AzureDropSkill(config: SkillConfig) : LocationTargetSkill, EntityTargetSki
         val player = meta.caster.entity as? Player
 
         val factory = AzureFlowAPI.getFactory(item.get(meta.caster))
-        val stack = factory?.build()?.virtualItemStack(player) ?: return SkillResult.ERROR
+
+        val stack = factory?.build()?.itemStack(player) ?: return SkillResult.ERROR
         submit {
             repeat(amount.get(meta.caster).cint) {
                 location.world?.dropItem(location, stack)
@@ -46,9 +47,10 @@ class AzureDropSkill(config: SkillConfig) : LocationTargetSkill, EntityTargetSki
         val player = meta.caster.entity as? Player
 
         val factory = AzureFlowAPI.getFactory(item.get(meta.caster))
-        val stack = factory?.build()?.virtualItemStack(player) ?: return SkillResult.ERROR
+        val stack = factory?.build()?.itemStack(player) ?: return SkillResult.ERROR
         submit {
             repeat(amount.get(meta.caster).cint) {
+                player?.let { p -> factory.build().drop(location, p) }
                 location.world?.dropItem(location, stack)
             }
         }

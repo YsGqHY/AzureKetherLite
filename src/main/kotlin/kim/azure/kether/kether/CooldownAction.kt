@@ -43,7 +43,7 @@ fun AzureFlowItem.setItemInCooldown(gameTick: Long, player: Player, byPlayer: Bo
  */
 fun AzureFlowItem.getItemInCooldown(player: Player, byPlayer: Boolean): Long {
     val time = if (byPlayer) {
-        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$uuid"].clong
+        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$factory."].clong
     } else {
         get<Long>(AZURE_COOLDOWN_PREFIX) ?: 0
     }

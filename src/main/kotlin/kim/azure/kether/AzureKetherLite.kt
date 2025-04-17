@@ -1,7 +1,9 @@
 package kim.azure.kether
 
-import io.rokuko.azureflow.features.addons.Addon
-import io.rokuko.azureflow.features.addons.AddonService
+import io.rokuko.azureflow.features.addon.Addon
+import io.rokuko.azureflow.features.addon.AddonService
+import kim.azure.kether.resolver.CooldownCheckResolver
+import kim.azure.kether.resolver.CooldownSetResolver
 import kim.azure.kether.resolver.KetherResolver
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.info
@@ -27,8 +29,13 @@ object AzureKetherLite : Plugin(), Addon {
 
     override fun register() {
         KetherResolver.register()
+        CooldownSetResolver.register()
+        CooldownCheckResolver.register()
     }
 
     override fun unRegister() {
+        KetherResolver.unRegister()
+        CooldownSetResolver.unRegister()
+        CooldownCheckResolver.unRegister()
     }
 }

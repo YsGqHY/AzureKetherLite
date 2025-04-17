@@ -1,12 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import io.izzel.taboolib.gradle.*
-import io.izzel.taboolib.gradle.Basic
 
 
 plugins {
     java
     id("io.izzel.taboolib") version "2.0.22"
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    kotlin("jvm") version "1.8.22"
 }
 
 taboolib {
@@ -35,7 +34,7 @@ taboolib {
             name("MythicMobs").optional(true)
         }
     }
-    version { taboolib = "6.2.0" }
+    version { taboolib = "6.2.3-0b616a8" }
     relocate("ink.ptms.um","kim.azure.kether.um")
 }
 
@@ -44,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    taboo("ink.ptms:um:1.1.2")
+    taboo("ink.ptms:um:1.1.5")
     compileOnly("ink.ptms.core:v12004:12004:mapped")
     compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly(kotlin("stdlib"))

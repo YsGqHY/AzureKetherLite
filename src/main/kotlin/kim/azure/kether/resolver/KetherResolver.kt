@@ -1,14 +1,12 @@
 package kim.azure.kether.resolver
 
-import io.rokuko.azureflow.AzureFlow
 import io.rokuko.azureflow.features.action.ActionBindings
 import io.rokuko.azureflow.features.action.AzureFlowActionableObject
+import io.rokuko.azureflow.features.logger.log
 import io.rokuko.azureflow.features.resolver.provided.PrefixSupportResolver
 import kim.azure.kether.util.evalKether
 import taboolib.common.platform.function.pluginId
-import taboolib.common.platform.function.submit
 import taboolib.common.platform.function.submitAsync
-import taboolib.common5.cbool
 import taboolib.module.kether.runKether
 
 object KetherResolver : PrefixSupportResolver("ke") {
@@ -19,12 +17,11 @@ object KetherResolver : PrefixSupportResolver("ke") {
         actionableObject: AzureFlowActionableObject
     ): Boolean {
         submitAsync {
-            runKether(true) {
+            runKether(detailError = true) {
                 args.evalKether(
                     actionableObject.player,
                     mapOf(
-                        "item-amount" to actionableObject.itemStack?.amount,
-                        "item-uuid" to actionableObject.item?.uuid
+                        "item-amount" to actionableObject.itemStack?.amount
                     ),
                     listOf(
                         "@AzureItemStack" to actionableObject.itemStack,
@@ -40,6 +37,6 @@ object KetherResolver : PrefixSupportResolver("ke") {
 
     override fun register() {
         super.register()
-        AzureFlow.print("成功注册附属 [ $pluginId ( &f&l$name&7 ) ]")
+        log("成功注册附属 [ $pluginId ( &f&l$name&7 ) ]")
     }
 }
