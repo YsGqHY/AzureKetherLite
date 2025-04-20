@@ -3,9 +3,9 @@ import io.izzel.taboolib.gradle.*
 
 
 plugins {
+    id("io.izzel.taboolib") version "2.0.23"
+    kotlin("jvm") version "2.1.0"
     java
-    id("io.izzel.taboolib") version "2.0.22"
-    kotlin("jvm") version "1.8.22"
 }
 
 taboolib {
@@ -34,7 +34,7 @@ taboolib {
             name("MythicMobs").optional(true)
         }
     }
-    version { taboolib = "6.2.3-0b616a8" }
+    version { taboolib = "6.2.3-8cc2f66" }
     relocate("ink.ptms.um","kim.azure.kether.um")
 }
 
