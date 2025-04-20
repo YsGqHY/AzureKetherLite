@@ -17,35 +17,35 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * 判断是否在冷却
- * @param byPlayer 是否绑定到玩家
+ * @param byItem 是否绑定到玩家
  */
-fun AzureFlowItem.isItemInCooldown(player: Player, byPlayer: Boolean): Boolean {
-    return getItemInCooldown(player, byPlayer) > 0
+fun AzureFlowItem.isItemInCooldown(player: Player, byItem: Boolean): Boolean {
+    return getItemInCooldown(player, byItem) > 0
 }
 
 /**
  * 设置冷却, 只是写入内存，并不会写入数据库中
- * @param byPlayer 是否绑定到玩家
+ * @param byItem 是否绑定到玩家
  */
-fun AzureFlowItem.setItemInCooldown(gameTick: Long, player: Player, byPlayer: Boolean, itemStack: ItemStack) {
+fun AzureFlowItem.setItemInCooldown(gameTick: Long, player: Player, byItem: Boolean, itemStack: ItemStack) {
     val nextTime = System.currentTimeMillis() + gameTick
-    if (byPlayer) {
-        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$uuid"] = nextTime
-    } else {
+    if (byItem) {
         set(AZURE_COOLDOWN_PREFIX, nextTime)
         update(player, itemStack)
+    } else {
+        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$uuid"] = nextTime
     }
 }
 
 /**
  * 获取冷却剩余时间
- * @param byPlayer 是否绑定到玩家
+ * @param byItem 是否绑定到玩家
  */
-fun AzureFlowItem.getItemInCooldown(player: Player, byPlayer: Boolean): Long {
-    val time = if (byPlayer) {
-        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$factory."].clong
-    } else {
+fun AzureFlowItem.getItemInCooldown(player: Player, byItem: Boolean): Long {
+    val time = if (byItem) {
         get<Long>(AZURE_COOLDOWN_PREFIX) ?: 0
+    } else {
+        player.getDataContainer()["$AZURE_COOLDOWN_PREFIX.$uuid"].clong
     }
     return time - System.currentTimeMillis()
 }
@@ -78,13 +78,13 @@ fun read(reader: String): Duration {
 
 /**
  * 判断物品/玩家是否冷却
- * azure-cd check for [item/player]
+ * azure-cd check [for (item/player)]
  *
  * 获取物品/玩家的冷却剩余时间
- * azure-cd time for [item/player]
+ * azure-cd time [for (item/player)]
  *
  * 获取物品/玩家的冷却 (单位Ticks)
- * azure-cd set 20s for [item/player]
+ * azure-cd set to 20s [for (item/player)]
  *
  * 默认检测物品是否在冷却
  * azure-cd check
@@ -93,27 +93,26 @@ fun read(reader: String): Duration {
 fun parseCooldown() = combinationParser {
     it.group(
         symbol(),
-        text().optional(),
+        command("to", then = text()).optional(),
         command("for", "by", then = symbol()).optional()
     ).apply(it) { oper, time, target ->
         now {
-            val byPlayer = target.getOrNull().equals("player", ignoreCase = true)
+            val byItem = target.getOrNull().equals("item", ignoreCase = true)
             val player = getBukkitPlayer()
             when (oper) {
-                "check" -> {
-                    getAzureItem().isItemInCooldown(player, byPlayer)
+                "check", "in", "look" -> {
+                    getAzureItem().isItemInCooldown(player, byItem)
                 }
 
-                "time" -> {
-                    getAzureItem().getItemInCooldown(player, byPlayer)
+                "time", "remain", "get" -> {
+                    getAzureItem().getItemInCooldown(player, byItem)
                 }
 
                 "set" -> {
-
                     getAzureItem().setItemInCooldown(
                         read(time.getOrNull() ?: return@now null).toMillis(),
                         player,
-                        byPlayer,
+                        byItem,
                         getItemStack()
                     )
                 }
