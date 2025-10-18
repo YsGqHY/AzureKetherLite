@@ -3,7 +3,7 @@ import io.izzel.taboolib.gradle.*
 
 
 plugins {
-    id("io.izzel.taboolib") version "2.0.23"
+    id("io.izzel.taboolib") version "2.0.27"
     kotlin("jvm") version "2.1.0"
     java
 }
@@ -25,6 +25,7 @@ taboolib {
             MinecraftChat,
             MinecraftEffect
         )
+        repoTabooLib = "https://repo.aeoliancloud.com/repository/releases"
     }
     description {
         name = "AzureKetherLite"
@@ -34,11 +35,12 @@ taboolib {
             name("MythicMobs").optional(true)
         }
     }
-    version { taboolib = "6.2.3-8cc2f66" }
+    version { taboolib = "6.2.3-9e947e4" }
     relocate("ink.ptms.um","kim.azure.kether.um")
 }
 
 repositories {
+    maven("https://repo.aeoliancloud.com/repository/releases") { isAllowInsecureProtocol = true }
     mavenCentral()
 }
 
